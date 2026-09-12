@@ -491,56 +491,6 @@
   }
 
   .pop-body p, .pop-body li, .pop-body .evidence-block, .pop-body span{ white-space:pre-line; }
-  .pop-body [contenteditable="true"].editable{
-    outline:1.5px dashed var(--line); outline-offset:3px; border-radius:4px; cursor:text;
-    transition: outline-color .15s ease, background .15s ease;
-  }
-  .pop-body [contenteditable="true"].editable:hover{ outline-color:var(--ink-soft); background:#FBFCFD; }
-  .pop-body [contenteditable="true"].editable:focus{ outline:1.5px solid #1F8A55; outline-offset:3px; background:#F5FBF8; }
-  .readme-modal-body [contenteditable="true"].editable{
-    outline:1.5px dashed var(--line); outline-offset:3px; border-radius:4px; cursor:text;
-    transition: outline-color .15s ease, background .15s ease;
-  }
-  .readme-modal-body [contenteditable="true"].editable:hover{ outline-color:var(--ink-soft); background:#FBFCFD; }
-  .readme-modal-body [contenteditable="true"].editable:focus{ outline:1.5px solid #1F8A55; outline-offset:3px; background:#F5FBF8; }
-  .socio-dim-label[contenteditable="true"].editable{
-    outline:1.5px dashed var(--line); outline-offset:2px; border-radius:4px; cursor:text;
-  }
-  .socio-dim-label[contenteditable="true"].editable:hover{ outline-color:var(--ink-soft); }
-  .socio-dim-label[contenteditable="true"].editable:focus{ outline:1.5px solid #1F8A55; background:#F5FBF8; }
-  .lifecycle-dim-label[contenteditable="true"].editable{
-    outline:1.5px dashed var(--line); outline-offset:2px; border-radius:4px; cursor:text;
-  }
-  .lifecycle-dim-label[contenteditable="true"].editable:hover{ outline-color:var(--ink-soft); }
-  .lifecycle-dim-label[contenteditable="true"].editable:focus{ outline:1.5px solid #1F8A55; background:#F5FBF8; }
-  .two-dims-intro[contenteditable="true"].editable{
-    outline:1.5px dashed var(--line); outline-offset:2px; border-radius:4px; cursor:text;
-  }
-  .main-subtitle[contenteditable="true"].editable,
-  .entry-point-title[contenteditable="true"].editable,
-  .entry-point-desc[contenteditable="true"].editable{
-    outline:1.5px dashed var(--line); outline-offset:2px; border-radius:4px; cursor:text;
-  }
-  .main-subtitle[contenteditable="true"].editable:hover,
-  .entry-point-title[contenteditable="true"].editable:hover,
-  .entry-point-desc[contenteditable="true"].editable:hover{ outline-color:var(--ink-soft); }
-  .main-subtitle[contenteditable="true"].editable:focus,
-  .entry-point-title[contenteditable="true"].editable:focus,
-  .entry-point-desc[contenteditable="true"].editable:focus{ outline:1.5px solid #1F8A55; background:#F5FBF8; }
-  .two-dims-intro[contenteditable="true"].editable:hover{ outline-color:var(--ink-soft); }
-  .two-dims-intro[contenteditable="true"].editable:focus{ outline:1.5px solid #1F8A55; background:#F5FBF8; }
-
-  .fmt-toolbar{
-    position:absolute; top:0; left:0; z-index:200; display:none; gap:2px;
-    background:var(--ink); border-radius:8px; padding:4px; box-shadow:var(--shadow);
-  }
-  .fmt-toolbar.show{ display:flex; }
-  .fmt-toolbar button{
-    width:28px; height:28px; border:none; border-radius:5px; background:transparent; color:#fff;
-    font-family:'IBM Plex Sans', sans-serif; font-size:13px; cursor:pointer; display:flex; align-items:center; justify-content:center;
-  }
-  .fmt-toolbar button:hover{ background:rgba(255,255,255,0.18); }
-  .fmt-toolbar button[data-size-cmd]{ width:32px; font-size:11.5px; }
 
   .hotspot-tooltip{
     position:fixed; z-index:250; display:none; max-width:320px;
@@ -838,8 +788,6 @@ body{ -webkit-user-select:none; -moz-user-select:none; user-select:none; }
       <div class="header-actions-right">
         <div class="header-actions-stack">
           <button id="evalOpenBtn" class="toolbar-btn toolbar-btn-primary">&#9776; Evaluate this framework</button>
-          <button id="editModeBtn" class="toolbar-btn">&#9998; Edit mode: Off</button>
-          <button id="downloadEditsBtn" class="toolbar-btn" style="display:none;">&#8681; Download edits</button>
         </div>
       </div>
     </div>
@@ -2165,14 +2113,11 @@ body{ -webkit-user-select:none; -moz-user-select:none; user-select:none; }
   // Renders final, fixed content — kept as a small helper (rather than
   // inlining every call site) purely because dozens of call sites
   // already use this exact signature throughout the file.
-  let EDIT_MODE = false;
   const EDITS = {"eval:about:org:label": "Your organisation", "eval:about:role:label": "Your role", "mainSubtitle": "<span style=\"font-size: 12pt;\">This decision-support framework helps develop and manage Construction Digital Twins (CDTs) in practice. Start by clicking (CDT System) at the centre of the wheel.</span>", "cdtSystemDef": "<i>A Construction Digital Twin (CDT) </i>is a digital twin developed for a specific application during the construction phase of a built-asset project. It dynamically represents construction-site entities (e.g., workers, equipment, assets, or processes) by collecting and analysing their data at a frequency and responsiveness suited to the application's temporal requirements.<br><br><p>This framework structures CDT development and management across five lifecycle stages (<i>Define, Design, Deploy, Refine, and Decommission</i>), and adopts a stakeholder-centric socio-technical approach. It brings together four actor groups (<i>Strategic, Advisory, Technical, and Operational</i>), whose roles and authority vary across the lifecycle.</p>", "entryCard:1a:title": "<span style=\"font-size: 9.5pt;\"><span style=\"font-size: 10pt;\">Developing a new CDT</span></span>", "entryCard:1a:desc": "Start by defining its purpose, scope, and requirements.", "entryCard:3a:title": "<span style=\"font-size: 9.5pt;\"><span style=\"font-size: 10pt;\">Deploying a designed CDT</span></span>", "entryCard:3a:desc": "<span style=\"font-size: 8.5pt;\"><span style=\"font-size: 9pt;\">Integrate the designed system and bring it into operation.</span></span>", "entryCard:5a:title": "<span style=\"font-size: 9.5pt;\"><span style=\"font-size: 10pt;\"><span style=\"font-size: 9.5pt;\"><span style=\"font-size: 10pt;\">Decommissioning an existing CDT</span></span></span></span>", "entryCard:5a:desc": "<span style=\"font-size: 8.5pt;\"><span style=\"font-size: 9pt;\">Resolve ownership and decide what happens to accumulated assets.</span></span>", "newcomp:1a:doText": "<ul><li><span style=\"white-space-collapse: collapse;\">Use the guiding taxonomy below to identify the relevant construction application, the specific purpose (use case) the CDT will address, and the scope (required functionalities).</span></li><li><span style=\"white-space: normal\">You can define the scope of CDT functionality top-down (agreed by strategic actors up front) or bottom-up (built through user research when the user base is not yet well understood). The choice depends on how well the intended users are known.</span></li><li><span style=\"white-space-collapse: collapse;\">Document and prioritise the scope to avoid unnecessary features and provide all parties with a shared, documented basis for resolving scope disputes later. The MoSCoW method has proved effective and is therefore recommended here.</span></li></ul>", "eval:cluster:cluster3:title": "Decommissioning Pathways", "eval:page:clusters:note": "", "eval:page:clusters:title": "", "eval:cluster:cluster1:title": "Integrated decision-support constructs (Application → Data → Architecture → Technology mapping)", "eval:about:specialisation:label": "Area of specialisation", "eval:about:years:label": "Years of experience", "eval:about:dt:label": "Experience with Digital Twins", "eval:about:respondent:label": "I am responding as", "eval:about:respondent:opt:0": "Industry practitioner", "eval:about:respondent:opt:1": "Researcher/academic", "eval:about:respondent:opt:2": "Both", "eval:about:dt:opt:0": "None", "eval:about:dt:opt:1": "Limited", "eval:about:dt:opt:2": "Moderate", "eval:about:dt:opt:3": "Extensive", "eval:page:final:title": "", "eval:final:strongest:label": "Which aspect of the framework do you consider its strongest contribution? (select all that apply)", "eval:final:strongest:opt:0": "System lifecycle structure", "eval:final:strongest:opt:1": "Stakeholder-centricity (e.g., actor groups, user personas, system ownership &amp; governance, human-system interaction)", "eval:final:strongest:opt:2": "Application–data–architecture–technology mapping", "eval:final:strongest:opt:3": "Iterative feedback loop (Deploy → Refine → Design)", "eval:final:strongest:opt:4": "Decommissioning pathways", "eval:final:limitation:label": "What is the main limitation of the framework as a decision-support instrument?", "eval:final:change:label": "What change, if any, would most improve the framework?", "eval:final:intention:label": "Would you consider using this framework to support the development or implementation of a CDT in practice?", "eval:final:why:label": "Why? (optional)", "newcomp:5b:output": "Agreed Decommissioning Pathway.&nbsp;", "newcomp:2c:doText": "<ul><li style=\"margin-bottom: 7px;\">Use the selected application from 1a and the required architecture layers from 2a as inputs to identify suitable enabling technologies and processes for each layer using the technology mapping below.</li><li style=\"margin-bottom: 7px;\">Evaluate each candidate against five criteria:<ul style=\"margin-top: 6px;\"><li style=\"margin-bottom: 7px;\"><b>Functional fit:</b> does it provide the scope of functionality defined in 1a?</li><li style=\"margin-bottom: 7px;\"><b>Performance fit:</b> does it meet the data and feedback requirements from 1c, frequency, latency, responsiveness, and level of automation?</li><li style=\"margin-bottom: 7px;\"><b>Interoperability:</b> does it meet the technical, syntactic, and semantic requirements established in 2b?</li><li style=\"margin-bottom: 7px;\"><b>User fit:</b> does it suit the user requirements from 1b — needs, digital literacy, accessibility, preferred mode of interaction, and compatibility with systems users are already familiar with?</li><li><b>Governance fit:</b> is it compatible with the ownership and governance arrangements from 1d, which may constrain technology access, data use, confidentiality, or responsibility?</li></ul></li></ul>", "eval:cluster1:representativeness": "The mapping adequately represents the main CDT applications in construction projects, their associated data types, and the enabling technologies required within each architectural layer.", "eval:cluster1:applicability": "The mapping can be applied to provide technical guidance on application, data, and enabling technologies across different CDT implementations and project contexts.", "eval:whole:U6": "The iterative feedback loop from Deploy through Refine and back to Design helps keep the CDT adaptive and responsive to its operational performance.", "eval:whole:R2": "The components within each stage adequately represent the main activities and considerations involved in CDT development.", "eval:whole:R5": "The framework adequately considers the needs and interactions of CDT users.", "eval:whole:A4": "The framework can be applied at different points in the CDT lifecycle — whether developing a new CDT, deploying an already designed CDT, or decommissioning one already in use."};  function ed(path, text, tag, extraClass){
     tag = tag || 'p';
     const val = EDITS.hasOwnProperty(path) ? EDITS[path] : (text || '');
-    let cls = extraClass || '';
-    if(EDIT_MODE) cls += ' editable';
-    const ce = EDIT_MODE ? ' contenteditable="true"' : '';
-    return `<${tag} class="${cls.trim()}" data-edit-path="${path}"${ce}>${val}</${tag}>`;
+    const cls = extraClass || '';
+    return `<${tag} class="${cls}" data-edit-path="${path}">${val}</${tag}>`;
   }
 
   // Applies EDITS overrides to elements whose text is baked into static
@@ -2205,10 +2150,10 @@ body{ -webkit-user-select:none; -moz-user-select:none; user-select:none; }
   // Each criterion has its own wording, not a shared SD/D/A/SA/N/A scale —
   // five substantive points plus a non-response option.
   const EVAL_SCALES = {
-    clarity: ['Very easy to understand','Easy to understand','Difficult to understand','Very difficult to understand','N/A \u2014 Cannot judge'],
-    usefulness: ['Extremely useful','Very useful','Slightly useful','Not at all useful','N/A \u2014 Cannot judge'],
-    representativeness: ['Extremely representative','Very representative','Slightly representative','Not at all representative','N/A \u2014 Cannot judge'],
-    applicability: ['Very broadly applicable','Broadly applicable','Slightly applicable','Not at all applicable','N/A \u2014 Cannot judge'],
+    clarity: ['Very easy to understand','Somewhat easy to understand','Somewhat difficult to understand','Very difficult to understand','N/A \u2014 Cannot judge'],
+    usefulness: ['Very useful','Somewhat useful','Marginally useful','Not at all useful','N/A \u2014 Cannot judge'],
+    representativeness: ['Very representative','Somewhat representative','Marginally representative','Not at all representative','N/A \u2014 Cannot judge'],
+    applicability: ['Very applicable','Somewhat applicable','Marginally applicable','Not at all applicable','N/A \u2014 Cannot judge'],
   };
   const EVAL_CRITERION_LABEL = { clarity:'Clarity', usefulness:'Usefulness', representativeness:'Representativeness', applicability:'Applicability' };
 
@@ -2891,215 +2836,6 @@ body{ -webkit-user-select:none; -moz-user-select:none; user-select:none; }
   const evalBtn = document.getElementById('evalOpenBtn');
   if(evalBtn) evalBtn.addEventListener('click', openEvalModal);
 
-  // Pressing Enter inside a contenteditable <p> normally makes the
-  // browser insert a nested <div> to start the "new paragraph" — that's
-  // tolerated while live-editing, but these fields get saved as an HTML
-  // string and later re-inserted via innerHTML on re-render (every time
-  // the component reopens), which parses as real HTML rather than live
-  // DOM edits. A <div> can't validly nest inside a <p>, so the parser
-  // silently closes the <p> early and strands the rest of the text in a
-  // new sibling with no data-edit-path — empty-looking box, text visibly
-  // "moved below it," no longer editable. Inserting a <br> instead avoids
-  // this entirely, since a line break is valid content inside a <p>.
-  // Exception: inside a <li> (e.g. a bulleted Method field), Enter
-  // creating a new <li> is valid HTML and exactly the expected behaviour
-  // for a list, so that case is left to the browser's own default.
-  document.addEventListener('keydown', (e)=>{
-    if(e.key !== 'Enter' || e.shiftKey) return;
-    const el = e.target.closest('[data-edit-path][contenteditable="true"]');
-    if(!el) return;
-    const sel = window.getSelection();
-    if(sel.rangeCount > 0){
-      let node = sel.getRangeAt(0).startContainer;
-      if(node.nodeType === 3) node = node.parentElement;
-      const li = node ? node.closest('li') : null;
-      if(li && el.contains(li)) return; // inside a list item — let the browser handle it
-    }
-    e.preventDefault();
-    document.execCommand('insertLineBreak');
-    syncEditFromElement(el);
-  });
-
-  document.addEventListener('input', (e)=>{
-    const el = e.target.closest('[data-edit-path][contenteditable="true"]');
-    if(el){
-      // Merging content across an element boundary (e.g. backspacing a
-      // list item into its preceding paragraph) sometimes bakes the
-      // focus-state background colour into a stray inline style, to
-      // "preserve" the visual appearance through the merge — purely
-      // cosmetic, but worth stripping so it doesn't linger in saved text.
-      el.querySelectorAll('span[style*="245, 251, 248"], span[style*="#F5FBF8"], span[style*="#f5fbf8"]').forEach(span=>{
-        span.style.backgroundColor = '';
-        if(!span.getAttribute('style')) span.removeAttribute('style');
-      });
-      EDITS[el.getAttribute('data-edit-path')] = el.innerHTML;
-    }
-  });
-
-  // ---- Floating format toolbar: select text inside any editable field to
-  // bold/italic/underline it, same as a normal rich-text editor. ----
-  const fmtToolbar = document.createElement('div');
-  fmtToolbar.className = 'fmt-toolbar';
-  fmtToolbar.innerHTML = `
-    <button type="button" data-cmd="bold"><b>B</b></button>
-    <button type="button" data-cmd="italic"><i>I</i></button>
-    <button type="button" data-cmd="underline"><u>U</u></button>
-    <button type="button" data-size-cmd="dec" title="Decrease text size">A&#8211;</button>
-    <button type="button" data-size-cmd="inc" title="Increase text size">A+</button>
-    <button type="button" data-cmd="removeFormat">&#x2715;</button>`;
-  document.body.appendChild(fmtToolbar);
-
-  function syncEditFromElement(el){
-    if(el && el.hasAttribute && el.hasAttribute('data-edit-path')){
-      EDITS[el.getAttribute('data-edit-path')] = el.innerHTML;
-    }
-  }
-
-  function positionFmtToolbar(){
-    const sel = window.getSelection();
-    if(!sel || sel.rangeCount === 0 || sel.isCollapsed){ fmtToolbar.classList.remove('show'); return; }
-    const anchorEl = sel.anchorNode && (sel.anchorNode.nodeType === 1 ? sel.anchorNode : sel.anchorNode.parentElement);
-    const editableEl = anchorEl ? anchorEl.closest('[data-edit-path][contenteditable="true"]') : null;
-    if(!editableEl){ fmtToolbar.classList.remove('show'); return; }
-    const rect = sel.getRangeAt(0).getBoundingClientRect();
-    if(!rect || (rect.width === 0 && rect.height === 0)){ fmtToolbar.classList.remove('show'); return; }
-    fmtToolbar.style.left = Math.max(8, rect.left + rect.width/2 - 70) + 'px';
-    fmtToolbar.style.top = (rect.top - 42 + window.scrollY) + 'px';
-    fmtToolbar.classList.add('show');
-    fmtToolbar._targetEl = editableEl;
-  }
-  document.addEventListener('selectionchange', ()=>{
-    if(!EDIT_MODE){ fmtToolbar.classList.remove('show'); return; }
-    positionFmtToolbar();
-  });
-  fmtToolbar.querySelectorAll('button[data-cmd]').forEach(btn=>{
-    // mousedown (not click) + preventDefault keeps the text selection alive
-    // so execCommand has something to act on.
-    btn.addEventListener('mousedown', (e)=>{
-      e.preventDefault();
-      const cmd = btn.getAttribute('data-cmd');
-      document.execCommand(cmd, false, null);
-      syncEditFromElement(fmtToolbar._targetEl);
-    });
-  });
-
-  // Text size uses a manual span-wrap (rather than execCommand('fontSize',...),
-  // which only offers seven fixed legacy sizes and doesn't compose well with
-  // text that's already been resized once) — each click scales the current
-  // selection's font-size by a fixed step relative to its own computed size,
-  // so repeated clicks keep growing/shrinking it smoothly, and re-selecting
-  // an already-sized span and clicking again adjusts that same size further
-  // rather than nesting another wrapper around it.
-  // A fixed 0.5pt step (rather than a percentage) so each click moves the
-  // size by the same small, easy-to-judge amount regardless of how big the
-  // text already is — a percentage step gets visually larger and harder to
-  // control the bigger the text gets.
-  const FONT_SIZE_STEP_PT = 0.5;
-  const FONT_SIZE_MIN_PT = 7;
-  const FONT_SIZE_MAX_PT = 28;
-  const PX_PER_PT = 96 / 72;
-  function adjustSelectionFontSize(deltaPt){
-    const sel = window.getSelection();
-    if(!sel || sel.rangeCount === 0 || sel.isCollapsed) return;
-    const range = sel.getRangeAt(0);
-    let node = range.startContainer;
-    if(node.nodeType === 3) node = node.parentElement;
-    const currentPt = (parseFloat(getComputedStyle(node).fontSize) || 14) / PX_PER_PT;
-    const steppedPt = Math.round((currentPt + deltaPt) * 2) / 2; // snap to the nearest 0.5pt
-    const newPt = Math.max(FONT_SIZE_MIN_PT, Math.min(FONT_SIZE_MAX_PT, steppedPt));
-    try {
-      const span = document.createElement('span');
-      span.style.fontSize = newPt + 'pt';
-      const contents = range.extractContents();
-      span.appendChild(contents);
-      range.insertNode(span);
-      const newRange = document.createRange();
-      newRange.selectNodeContents(span);
-      sel.removeAllRanges();
-      sel.addRange(newRange);
-    } catch(e) { /* selection spans something un-wrappable (e.g. a table boundary) — no-op */ }
-  }
-  fmtToolbar.querySelectorAll('button[data-size-cmd]').forEach(btn=>{
-    btn.addEventListener('mousedown', (e)=>{
-      e.preventDefault();
-      const dir = btn.getAttribute('data-size-cmd');
-      adjustSelectionFontSize(dir === 'inc' ? FONT_SIZE_STEP_PT : -FONT_SIZE_STEP_PT);
-      syncEditFromElement(fmtToolbar._targetEl);
-    });
-  });
-
-  const editModeBtn = document.getElementById('editModeBtn');
-  const downloadEditsBtn = document.getElementById('downloadEditsBtn');
-  function updateEditToolbar(){
-    if(editModeBtn){
-      editModeBtn.textContent = EDIT_MODE ? '\u270E Edit mode: On' : '\u270E Edit mode: Off';
-      editModeBtn.classList.toggle('active', EDIT_MODE);
-    }
-    if(downloadEditsBtn){
-      const hasEdits = Object.keys(EDITS).length > 0;
-      downloadEditsBtn.style.display = (EDIT_MODE || hasEdits) ? 'inline-flex' : 'none';
-    }
-    if(!EDIT_MODE){ fmtToolbar.classList.remove('show'); }
-    const readmeBody = document.getElementById('readmeModalBody');
-    if(readmeBody){
-      readmeBody.querySelectorAll('[data-edit-path]').forEach(el=>{
-        el.setAttribute('contenteditable', EDIT_MODE ? 'true' : 'false');
-        el.classList.toggle('editable', EDIT_MODE);
-      });
-    }
-    const socioLabel = document.querySelector('.socio-dim-label[data-edit-path]');
-    if(socioLabel){
-      socioLabel.setAttribute('contenteditable', EDIT_MODE ? 'true' : 'false');
-      socioLabel.classList.toggle('editable', EDIT_MODE);
-    }
-    const lifecycleLabel = document.querySelector('.lifecycle-dim-label[data-edit-path]');
-    if(lifecycleLabel){
-      lifecycleLabel.setAttribute('contenteditable', EDIT_MODE ? 'true' : 'false');
-      lifecycleLabel.classList.toggle('editable', EDIT_MODE);
-    }
-    const twoDimsIntro = document.querySelector('.two-dims-intro[data-edit-path]');
-    if(twoDimsIntro){
-      twoDimsIntro.setAttribute('contenteditable', EDIT_MODE ? 'true' : 'false');
-      twoDimsIntro.classList.toggle('editable', EDIT_MODE);
-    }
-    document.querySelectorAll('.entry-point-title[data-edit-path], .entry-point-desc[data-edit-path]').forEach(el=>{
-      el.setAttribute('contenteditable', EDIT_MODE ? 'true' : 'false');
-      el.classList.toggle('editable', EDIT_MODE);
-    });
-    const mainSubtitle = document.querySelector('.main-subtitle[data-edit-path]');
-    if(mainSubtitle){
-      mainSubtitle.setAttribute('contenteditable', EDIT_MODE ? 'true' : 'false');
-      mainSubtitle.classList.toggle('editable', EDIT_MODE);
-    }
-    const fcFrame = document.getElementById('feedbackCycleFrame');
-    if(fcFrame && fcFrame.contentWindow){
-      fcFrame.contentWindow.postMessage({type:'setEditMode', on: EDIT_MODE}, '*');
-    }
-    if(evalModalEl){
-      evalModalEl.querySelectorAll('[data-edit-path]').forEach(el=>{
-        el.setAttribute('contenteditable', EDIT_MODE ? 'true' : 'false');
-        el.classList.toggle('editable', EDIT_MODE);
-      });
-    }
-  }
-  if(editModeBtn){
-    editModeBtn.addEventListener('click', ()=>{
-      EDIT_MODE = !EDIT_MODE;
-      updateEditToolbar();
-    });
-  }
-  if(downloadEditsBtn){
-    downloadEditsBtn.addEventListener('click', ()=>{
-      const blob = new Blob([JSON.stringify(EDITS, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = 'cdt_framework_edits.json';
-      document.body.appendChild(a); a.click(); a.remove();
-      URL.revokeObjectURL(url);
-    });
-  }
-  updateEditToolbar();
-
 
   // ---- Cross-linked taxonomy legend (Fig 6.8 / 6.9 / 6.14) ----
 
@@ -3490,7 +3226,6 @@ body{ -webkit-user-select:none; -moz-user-select:none; user-select:none; }
   function wireEntryPointCards(container){
     container.querySelectorAll('.entry-point-card').forEach(card=>{
       card.addEventListener('click', (e)=>{
-        if(EDIT_MODE) return; // let the click place a text cursor instead of navigating
         // Stop this here, before openStage/openComponent replace the popover's
         // content (and this very card along with it) — otherwise the same
         // click event, still bubbling, reaches the document-level dismiss
@@ -3523,7 +3258,6 @@ body{ -webkit-user-select:none; -moz-user-select:none; user-select:none; }
     popBody.innerHTML = html;
     showPopover(); positionPopover(evt);
     wireEntryPointCards(popBody);
-    updateEditToolbar();
   }
 
   Object.keys(compLookup).forEach(elId=>{
