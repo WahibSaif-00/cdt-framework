@@ -2215,6 +2215,7 @@ body{ -webkit-user-select:none; -moz-user-select:none; user-select:none; }
   const EVAL_ABOUT_FIELDS = [
     { key:'role', labelDefault:'Your role', type:'text' },
     { key:'org', labelDefault:'Your organisation', type:'text' },
+    { key:'country', labelDefault:'Country (or countries) where you work', type:'text' },
     { key:'specialisation', labelDefault:'Area of specialisation', type:'text' },
     { key:'years', labelDefault:'Years of experience', type:'text', narrow:true },
   ];
@@ -2224,7 +2225,7 @@ body{ -webkit-user-select:none; -moz-user-select:none; user-select:none; }
   let evalModalEl = null;
   let evalCurrentPage = 0;
   const evalState = {
-    about: { role:'', org:'', specialisation:'', years:'', dtExperience:'', respondentType:'' },
+    about: { role:'', org:'', country:'', specialisation:'', years:'', dtExperience:'', respondentType:'' },
     ratings: {},          // key -> scale index (0-5)
     strongest: [],        // array of selected option strings
     finalAnswers: { limitation:'', change:'', intention:'', intentionWhy:'' },
@@ -2613,7 +2614,7 @@ body{ -webkit-user-select:none; -moz-user-select:none; user-select:none; }
     const container = evalModalEl.querySelector('#evalPageContainer');
     const missing = [];
     if(page.id === 'about'){
-      ['role','org','specialisation','years'].forEach(key=>{
+      ['role','org','country','specialisation','years'].forEach(key=>{
         if(!evalState.about[key] || !evalState.about[key].trim()){
           const el = container.querySelector(`[data-field="${key}"]`);
           if(el) missing.push(el);
